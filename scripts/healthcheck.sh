@@ -38,12 +38,17 @@ if [[ -f "$CONFIG_FILE" ]]; then
 fi
 
 step "certificat TLS"
-if [[ -f "$LETSENCRYPT_LIVE/fullchain.pem" ]] && command -v openssl >/dev/null; then
-  end="$(openssl x509 -enddate -noout -in "$LETSENCRYPT_LIVE/fullchain.pem" | cut -d= -f2)"
-  days=$(( ( $(date -d "$end" +%s) - $(date +%s) ) / 86400 ))
-  [[ "$days" -gt 21 ]] && log "  OK  expire dans $days j ($end)" || { warn "  KO  expire dans $days j — vérifier le renouvellement"; rc=1; }
-else
-  warn "  ?   certificat introuvable : $LETSENCRYPT_LIVE/fullchain.pem"
+# On interroge le certificat SERVI (pas le fichier, illisible sans root).
+if command -v openssl >/dev/null; then
+  end="$(echo | openssl s_client -servername "$DOMAIN" -connect "$DOMAIN:443" 2>/dev/null \
+        | openssl x509 -noout -enddate 2>/dev/null | cut -d= -f2)"
+  if [[ -n "$end" ]]; then
+    days=$(( ( $(date -d "$end" +%s) - $(date +%s) ) / 86400 ))
+    [[ "$days" -gt 21 ]] && log "  OK  expire dans $days j ($end)" \
+      || { warn "  KO  expire dans $days j — vérifier le renouvellement"; rc=1; }
+  else
+    warn "  KO  impossible de lire le certificat servi par $DOMAIN"; rc=1
+  fi
 fi
 
 step "résumé"
