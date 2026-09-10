@@ -41,6 +41,7 @@ server {
 
     root /opt/vlldnt/portfolio/current;
     index index.html;
+    error_page 404 /404.html;
 
     gzip on;
     gzip_vary on;
@@ -60,11 +61,13 @@ server {
         try_files $uri =404;
     }
 
+    # Site statique multi-pages : pas de fallback SPA. Une URL inconnue = 404
+    # (donc vlldnt.fr/<projet> sans landing déployée répond 404).
     location / {
         include /opt/vlldnt/nginx/snippets/security-headers.conf;
         add_header Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'" always;
         add_header Cache-Control "no-cache" always;
-        try_files $uri $uri/ /index.html;
+        try_files $uri $uri/ =404;
     }
 }
 
