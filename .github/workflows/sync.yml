@@ -1,0 +1,68 @@
+name: Sync projects
+
+on:
+  # Un changement de projects.yml : on affiche le PLAN (dry-run) dans le job.
+  push:
+    branches: [main]
+    paths: ["projects.yml"]
+  # Pour APPLIQUER (déploiements + suppressions), lancer manuellement avec dry_run: false.
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Simulation seule (ne rien modifier sur le VPS)"
+        type: boolean
+        default: true
+      apply_renames:
+        description: "Appliquer aussi les renommages détectés"
+        type: boolean
+        default: false
+
+concurrency:
+  group: vlldnt-vps
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH → sync-projects.sh
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+          SSH_PORT: ${{ vars.SSH_PORT || '22' }}
+          # push → toujours dry-run ; workflow_dispatch → selon l'entrée.
+          DRY: ${{ (github.event_name == 'push' || inputs.dry_run) && '1' || '0' }}
+          RENAMES: ${{ inputs.apply_renames && '1' || '0' }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id ; chmod 600 ~/.ssh/id
+          if [ -n "${SSH_KNOWN_HOSTS:-}" ]; then
+            printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          else
+            ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          fi
+          chmod 600 ~/.ssh/known_hosts
+
+          FLAGS=""
+          [ "$DRY" = "1" ] && FLAGS="$FLAGS --dry-run"
+          [ "$RENAMES" = "1" ] && FLAGS="$FLAGS --apply-renames"
+
+          echo "::group::sync-projects.sh$FLAGS"
+          ssh -i ~/.ssh/id -p "$SSH_PORT" -o IdentitiesOnly=yes "$SSH_USER@$SSH_HOST" \
+            "bash /opt/vlldnt/scripts/deploy-portfolio.sh >/dev/null && VLLDNT_ASSUME_YES=1 bash /opt/vlldnt/scripts/sync-projects.sh$FLAGS" \
+            | tee sync-output.txt
+          echo "::endgroup::"
+
+          {
+            echo "### Sync projects — \`$( [ "$DRY" = 1 ] && echo DRY-RUN || echo APPLIQUÉ )\`"
+            echo '```'
+            grep -E '^(  |▶ |[0-9]{2}:).*' sync-output.txt | tail -n 60 || tail -n 40 sync-output.txt
+            echo '```'
+            [ "$DRY" = 1 ] && echo "_Pour appliquer : onglet Actions → Sync projects → Run workflow → dry_run: false._"
+          } >> "$GITHUB_STEP_SUMMARY"

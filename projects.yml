@@ -1,0 +1,34 @@
+# =====================================================================
+#  SOURCE DE VÉRITÉ des projets publiés sous vlldnt.fr.
+#  Éditée à la main. Un `push` sur main lance le workflow "sync" :
+#   - en DRY-RUN (affiche le plan dans le résumé du job)
+#   - puis exécuter manuellement "Sync projects" (dry_run: false) pour appliquer.
+#
+#  RÈGLES
+#   - deployed: true   → app sur <name>.vlldnt.fr (+ landing sur vlldnt.fr/<name>
+#                         si le dépôt contient un dossier landing-page/)
+#   - deployed: false  → ABSENT du VPS (aucun dossier, vhost, conteneur)
+#   - entrée SUPPRIMÉE → le projet est retiré du VPS (backup + confirmation ;
+#                         les données data/<name> sont archivées, pas détruites)
+#   - `name` : ^[a-z][a-z0-9-]{1,38}$  — sert aux URLs, chemins et conteneurs
+# =====================================================================
+
+domain: vlldnt.fr
+
+# Sortie de build du portfolio (dossier statique). Défaut : dist
+portfolio:
+  output: dist
+
+projects:
+  - name: flashcard
+    repo: https://github.com/tomvieilledent/flashcard.git
+    branch: main
+    deployed: false            # passer à true une fois le VPS provisionné (/opt/vlldnt + wildcard)
+    runtime: static            # static | compose
+    # output: dist             # (optionnel) dossier de build, défaut dist
+    # build: "npm ci && npm run build"   # (optionnel) commande de build, sinon auto si package.json
+    # csp: "default-src 'self'; script-src 'self' 'sha256-XXXX'; ..."  # (optionnel) CSP spécifique
+    #
+    # -- champs runtime: compose --
+    # port: 8082               # port loopback interne (obligatoire si compose)
+    # compose_file: compose.yml

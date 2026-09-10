@@ -1,0 +1,44 @@
+name: Deploy portfolio
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "projects.md"
+      - "**/*.md"
+  workflow_dispatch:
+
+# Un seul déploiement à la fois sur le VPS (partagé avec le workflow "sync").
+concurrency:
+  group: vlldnt-vps
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://vlldnt.fr
+    steps:
+      - name: SSH → deploy-portfolio.sh
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+          SSH_PORT: ${{ vars.SSH_PORT || '22' }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id ; chmod 600 ~/.ssh/id
+          if [ -n "${SSH_KNOWN_HOSTS:-}" ]; then
+            printf '%s\n' "$SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          else
+            ssh-keyscan -p "$SSH_PORT" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          fi
+          chmod 600 ~/.ssh/known_hosts
+          ssh -i ~/.ssh/id -p "$SSH_PORT" -o IdentitiesOnly=yes \
+            "$SSH_USER@$SSH_HOST" 'bash /opt/vlldnt/scripts/deploy-portfolio.sh'

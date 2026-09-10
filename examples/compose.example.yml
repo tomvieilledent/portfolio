@@ -1,0 +1,63 @@
+# Modèle de compose.yml pour un projet `runtime: compose`.
+# À la racine du dépôt du projet. Le port est exposé UNIQUEMENT sur la
+# loopback du VPS ; nginx (généré depuis app.compose.tmpl) fait le proxy.
+# Renseigner `port:` (le même) dans portfolio/projects.yml.
+
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    # 127.0.0.1 uniquement : jamais exposé directement sur Internet.
+    ports:
+      - "127.0.0.1:8082:3000"        # <port VPS>:<port interne du conteneur>
+    env_file:
+      - /opt/vlldnt/config/monprojet.env   # secrets, hors Git, chmod 600
+    environment:
+      NODE_ENV: production
+    user: "10001:10001"             # non-root
+    read_only: true
+    tmpfs:
+      - /tmp
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3000/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+    networks: [internal]
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: monprojet
+      POSTGRES_USER: monprojet
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_password
+    volumes:
+      # Données persistantes SOUS /opt/vlldnt/data/<nom>/ — jamais dans le code.
+      - /opt/vlldnt/data/monprojet/pg:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U monprojet"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
+    networks: [internal]
+    secrets: [db_password]
+
+networks:
+  internal:
+    name: vlldnt-monprojet
+    driver: bridge
+
+secrets:
+  db_password:
+    file: /opt/vlldnt/config/monprojet.db_password

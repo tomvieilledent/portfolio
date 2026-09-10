@@ -1,0 +1,15 @@
+# GÉNÉRÉ par deploy-project.sh — NE PAS ÉDITER
+# Landing page @@NAME@@ → https://vlldnt.fr/@@NAME@@
+# Ce fragment est inclus DANS le bloc server de l'apex (vlldnt.conf.base).
+
+location = /@@NAME@@ { return 308 /@@NAME@@/; }
+
+location ^~ /@@NAME@@/ {
+    alias /opt/vlldnt/landing-pages/@@NAME@@/;
+    index index.html;
+    try_files $uri $uri/ /@@NAME@@/index.html;
+
+    include /opt/vlldnt/nginx/snippets/security-headers.conf;
+    add_header Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'" always;
+    add_header Cache-Control "no-cache" always;
+}

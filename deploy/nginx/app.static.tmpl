@@ -1,0 +1,48 @@
+# GÉNÉRÉ par deploy-project.sh — NE PAS ÉDITER
+# Application statique @@NAME@@ → https://@@NAME@@.vlldnt.fr
+# Certificat wildcard mutualisé (lignée vlldnt.fr).
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name @@NAME@@.vlldnt.fr;
+    location / { return 301 https://@@NAME@@.vlldnt.fr$request_uri; }
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name @@NAME@@.vlldnt.fr;
+    server_tokens off;
+
+    ssl_certificate     /etc/letsencrypt/live/vlldnt.fr/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/vlldnt.fr/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers off;
+
+    root /opt/vlldnt/projects/@@NAME@@/current;
+    index index.html;
+
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 512;
+    gzip_types text/plain text/css application/javascript application/json image/svg+xml;
+
+    include /opt/vlldnt/nginx/snippets/security-headers.conf;
+    add_header Content-Security-Policy "@@CSP@@" always;
+
+    location ~* ^/(assets|_astro)/ {
+        include /opt/vlldnt/nginx/snippets/security-headers.conf;
+        add_header Content-Security-Policy "@@CSP@@" always;
+        add_header Cache-Control "public, max-age=31536000, immutable" always;
+        try_files $uri =404;
+    }
+
+    location / {
+        include /opt/vlldnt/nginx/snippets/security-headers.conf;
+        add_header Content-Security-Policy "@@CSP@@" always;
+        add_header Cache-Control "no-cache" always;
+        try_files $uri $uri/ /index.html;
+    }
+}
