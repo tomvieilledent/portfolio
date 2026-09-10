@@ -10,6 +10,6 @@ location ^~ /@@NAME@@/ {
     try_files $uri $uri/ /@@NAME@@/index.html;
 
     include /opt/vlldnt/nginx/snippets/security-headers.conf;
-    add_header Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'" always;
+    add_header Content-Security-Policy "default-src 'self'; script-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; font-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'" always;
     add_header Cache-Control "no-cache" always;
 }
