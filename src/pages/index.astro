@@ -10,11 +10,12 @@ const projects = (cfg.projects ?? [])
     title: p.title ?? p.name,
     tagline: p.tagline ?? "",
     stack: p.stack ?? "",
+    role: p.role ?? "",
+    logo: p.logo ?? "",
     repo: String(p.repo || "").replace(/^https:\/\/github\.com\//, "").replace(/\.git$/, ""),
     landing: `/${p.name}/`,
     app: `https://${p.name}.vlldnt.fr`,
   }));
-const year = new Date().getFullYear();
 ---
 
 <!doctype html>
@@ -22,16 +23,16 @@ const year = new Date().getFullYear();
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Tom Vieilledent — développeur fullstack. Projets en ligne." />
+    <meta name="description" content="Tom Vieilledent — développeur fullstack indépendant. Applications web sur mesure, hébergées sur infrastructure propre." />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="canonical" href="https://vlldnt.fr/" />
     <meta name="theme-color" content="#0d1b2e" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://vlldnt.fr/" />
     <meta property="og:title" content="Tom Vieilledent — Vieilledent Conseil" />
-    <meta property="og:description" content="Développeur fullstack. Projets en ligne." />
+    <meta property="og:description" content="Développeur fullstack indépendant. Applications web sur mesure." />
     <meta property="og:image" content="https://vlldnt.fr/og.jpg" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="1200" />
@@ -42,60 +43,62 @@ const year = new Date().getFullYear();
   </head>
   <body>
     <button id="theme-toggle" type="button" hidden aria-label="Changer de thème">
-      <svg class="i-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>
-      <svg class="i-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4.2" stroke="currentColor" stroke-width="1.7"/><path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
-      <svg class="i-auto" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="M12 3.5v17A8.5 8.5 0 0 0 12 3.5Z" fill="currentColor"/></svg>
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M12 3v2M12 19v2M5 5l1.5 1.5M17.5 17.5L19 19M3 12h2M19 12h2M5 19l1.5-1.5M17.5 6.5L19 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      <svg class="i-auto" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.6"/><path d="M12 4v16A8 8 0 0 0 12 4Z" fill="currentColor"/></svg>
     </button>
 
-    <div class="wrap">
-      <header class="top">
-        <span class="mark" aria-hidden="true">
-          <svg viewBox="0 0 512 512"><rect width="512" height="512" rx="120" fill="#0d1b2e"/><g fill="none" stroke-width="42" stroke-linecap="round" stroke-linejoin="round"><path d="M196 150 112 256 196 362" stroke="#4a86ff"/><path d="M316 150 400 256 316 362" stroke="#4a86ff"/><path d="M292 132 220 380" stroke="#e9ecf1"/></g></svg>
-        </span>
-        <span class="wordmark">Vieilledent&nbsp;Conseil</span>
+    <div class="page">
+      <header class="masthead">
+        <img src="/logo.png" width="76" height="76" alt="Vieilledent Conseil" />
+        <div>
+          <p class="name">Tom Vieilledent</p>
+          <p class="role">Développeur fullstack indépendant — <span>Vieilledent&nbsp;Conseil</span></p>
+        </div>
       </header>
 
-      <section class="hero">
-        <p class="eyebrow">Tom Vieilledent</p>
-        <h1>Développeur fullstack.</h1>
-        <p class="lead">
-          Je conçois et déploie des applications web de bout en bout —
-          du front à l'infrastructure. Voici ce qui tourne en ce moment.
+      <section class="intro">
+        <p>
+          Je développe des applications web sur mesure — de la conception
+          de l'interface au déploiement — et je les héberge moi-même sur un
+          serveur dédié : nginx, HTTPS, intégration et déploiement continus.
         </p>
-        <p class="contact">
-          <a href="https://github.com/tomvieilledent">GitHub</a>
+        <p class="links">
           <a href="mailto:tomvieilledent@gmail.com">tomvieilledent@gmail.com</a>
+          <span aria-hidden="true">·</span>
+          <a href="https://github.com/tomvieilledent">github.com/tomvieilledent</a>
         </p>
       </section>
 
-      <section class="projects" aria-label="Projets en ligne">
-        <h2>
-          <span>Projets en ligne</span>
-          <span class="count">{projects.length}</span>
-        </h2>
-
-        <ul>
-          {projects.map((p) => (
-            <li class="card">
-              <div class="card-head">
-                <h3><a href={p.app}>{p.title}</a></h3>
-                <span class="live"><span class="pulse"></span>en ligne</span>
+      <section class="works" aria-label="Réalisations en ligne">
+        <h2>Réalisations en ligne</h2>
+        <ol>
+          {projects.map((p, i) => (
+            <li>
+              <span class="num">{String(i + 1).padStart(2, "0")}</span>
+              <div class="work">
+                <div class="work-title">
+                  {p.logo && <img src={p.logo} width="22" height="22" alt="" />}
+                  <h3><a href={p.app}>{p.title}</a></h3>
+                </div>
+                {p.tagline && <p class="desc">{p.tagline}</p>}
+                <p class="meta">
+                  {p.role && <span>{p.role}</span>}
+                  {p.stack && <span>{p.stack}</span>}
+                </p>
+                <p class="work-links">
+                  <a href={p.app}>Site en ligne</a>
+                  <a href={p.landing}>Présentation</a>
+                  <a href={`https://github.com/${p.repo}`}>Code source</a>
+                </p>
               </div>
-              {p.tagline && <p class="card-tagline">{p.tagline}</p>}
-              {p.stack && <p class="card-stack">{p.stack}</p>}
-              <p class="card-links">
-                <a href={p.landing}>Aperçu</a>
-                <a href={p.app}>Ouvrir l'app ↗</a>
-                <a href={`https://github.com/${p.repo}`}>Code</a>
-              </p>
             </li>
           ))}
-        </ul>
+        </ol>
       </section>
 
       <footer>
-        <span>© {year} Tom Vieilledent</span>
-        <a href="https://github.com/tomvieilledent">github.com/tomvieilledent</a>
+        Aveyron, France. Site et projets hébergés sur <a href="https://vlldnt.fr">vlldnt.fr</a>.
       </footer>
     </div>
   </body>
@@ -103,35 +106,31 @@ const year = new Date().getFullYear();
 
 <style>
   :root {
-    --bg: #f6f7f9;
-    --panel: #ffffff;
-    --line: #e5e7eb;
-    --text: #16181d;
-    --muted: #5b6270;
-    --accent: #2f6df6;
-    --pulse: #1eae5b;
-    --shadow: 0 1px 2px rgba(16, 24, 40, 0.05), 0 8px 24px rgba(16, 24, 40, 0.06);
+    --bg: #faf9f7;
+    --text: #1a1a1a;
+    --muted: #6b6b6b;
+    --faint: #9a9a94;
+    --rule: #e2e0da;
+    --accent: #1d4ed8;
     color-scheme: light;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme]) {
-      --bg: #0d1220; --panel: #131a2a; --line: #24304a;
-      --text: #e9ecf1; --muted: #97a1b4; --accent: #6ea0ff; --pulse: #34d17f;
-      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.35);
+      --bg: #12141a; --text: #e6e4df; --muted: #9a9a92; --faint: #6f6f68;
+      --rule: #2a2c33; --accent: #7ba0ff;
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --bg: #0d1220; --panel: #131a2a; --line: #24304a;
-    --text: #e9ecf1; --muted: #97a1b4; --accent: #6ea0ff; --pulse: #34d17f;
-    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 10px 30px rgba(0,0,0,0.35);
-    color-scheme: dark;
+    --bg: #12141a; --text: #e6e4df; --muted: #9a9a92; --faint: #6f6f68;
+    --rule: #2a2c33; --accent: #7ba0ff; color-scheme: dark;
   }
   :root[data-theme="light"] {
-    --bg: #f6f7f9; --panel: #ffffff; --line: #e5e7eb;
-    --text: #16181d; --muted: #5b6270; --accent: #2f6df6; --pulse: #1eae5b;
-    --shadow: 0 1px 2px rgba(16,24,40,0.05), 0 8px 24px rgba(16,24,40,0.06);
-    color-scheme: light;
+    --bg: #faf9f7; --text: #1a1a1a; --muted: #6b6b6b; --faint: #9a9a94;
+    --rule: #e2e0da; --accent: #1d4ed8; color-scheme: light;
   }
 
   * { box-sizing: border-box; }
@@ -139,106 +138,81 @@ const year = new Date().getFullYear();
     margin: 0;
     background: var(--bg);
     color: var(--text);
-    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.7;
     -webkit-font-smoothing: antialiased;
-    transition: background-color 0.2s ease, color 0.2s ease;
   }
-  a { color: inherit; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 2px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-  .wrap { max-width: 52rem; margin: 0 auto; padding: clamp(28px, 6vw, 56px) 22px clamp(48px, 10vw, 88px); }
+  .page { max-width: 40rem; margin: 0 auto; padding: clamp(40px, 9vw, 88px) 24px clamp(56px, 12vw, 112px); }
 
   #theme-toggle {
-    position: fixed; top: 14px; right: 14px; z-index: 10;
-    width: 38px; height: 38px; display: grid; place-items: center;
-    border: 1px solid var(--line); border-radius: 999px;
-    background: var(--panel); color: var(--muted); cursor: pointer;
-    transition: color 0.15s ease, border-color 0.15s ease, transform 0.2s ease;
+    position: fixed; top: 16px; right: 16px; z-index: 10;
+    width: 34px; height: 34px; display: grid; place-items: center;
+    border: 1px solid var(--rule); border-radius: 8px;
+    background: transparent; color: var(--faint); cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
   }
-  #theme-toggle:hover { color: var(--text); border-color: var(--text); transform: rotate(12deg); }
-  #theme-toggle svg { width: 18px; height: 18px; }
+  #theme-toggle:hover { color: var(--text); border-color: var(--muted); }
+  #theme-toggle svg { width: 17px; height: 17px; }
   #theme-toggle .i-sun, #theme-toggle .i-auto { display: none; }
   #theme-toggle[data-state="light"] .i-sun { display: block; }
   #theme-toggle[data-state="light"] .i-moon { display: none; }
   #theme-toggle[data-state="auto"] .i-auto { display: block; }
   #theme-toggle[data-state="auto"] .i-moon { display: none; }
 
-  .top { display: flex; align-items: center; gap: 11px; }
-  .mark { width: 30px; height: 30px; display: block; }
-  .mark svg { width: 100%; height: 100%; border-radius: 8px; }
-  .wordmark { font-weight: 600; letter-spacing: -0.01em; }
+  .masthead { display: flex; align-items: center; gap: 16px; }
+  .masthead img { border-radius: 12px; flex: none; }
+  .masthead .name { margin: 0; font-family: var(--serif); font-size: 1.35rem; letter-spacing: -0.01em; }
+  .masthead .role { margin: 2px 0 0; color: var(--muted); font-size: 0.92rem; }
+  .masthead .role span { color: var(--text); }
 
-  .hero { padding: clamp(44px, 10vw, 84px) 0 clamp(36px, 8vw, 60px); }
-  .eyebrow { margin: 0; font-size: 0.82rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
-  h1 {
+  .intro { margin-top: clamp(36px, 8vw, 56px); }
+  .intro p { margin: 0; max-width: 34rem; }
+  .intro .links { margin-top: 16px; font-size: 0.92rem; color: var(--faint); display: flex; gap: 10px; flex-wrap: wrap; }
+
+  .works { margin-top: clamp(48px, 11vw, 80px); }
+  .works h2 {
+    margin: 0 0 8px;
+    font-size: 0.78rem; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--faint);
+  }
+  .works ol { list-style: none; margin: 0; padding: 0; }
+  .works li {
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 4px 0;
+    padding: 26px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .works li:last-child { border-bottom: 1px solid var(--rule); }
+  .num { font-family: var(--mono); font-size: 0.82rem; color: var(--faint); padding-top: 5px; }
+
+  .work-title { display: flex; align-items: center; gap: 9px; }
+  .work-title img { border-radius: 5px; flex: none; }
+  .work h3 { margin: 0; font-family: var(--serif); font-size: 1.4rem; font-weight: 600; letter-spacing: -0.01em; }
+  .work h3 a { color: var(--text); }
+  .work h3 a:hover { color: var(--accent); text-decoration: none; }
+
+  .desc { margin: 10px 0 0; color: var(--muted); max-width: 32rem; }
+  .meta {
     margin: 12px 0 0;
-    font-size: clamp(2.2rem, 8vw, 3.4rem);
-    line-height: 1.05; letter-spacing: -0.025em;
+    font-family: var(--mono); font-size: 0.8rem; color: var(--faint);
+    display: flex; flex-direction: column; gap: 2px;
   }
-  .lead { margin: 20px 0 0; color: var(--muted); max-width: 42ch; font-size: 1.05rem; }
-  .contact { margin: 24px 0 0; display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.95rem; }
-  .contact a { color: var(--accent); text-decoration: none; }
-  .contact a:hover { text-decoration: underline; }
-
-  .projects h2 {
-    display: flex; align-items: center; gap: 10px;
-    margin: 0 0 18px; font-size: 0.8rem;
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
-    padding-bottom: 12px; border-bottom: 1px solid var(--line);
-  }
-  .projects h2 .count {
-    margin-left: auto; font-size: 0.8rem; letter-spacing: 0;
-    color: var(--muted); border: 1px solid var(--line);
-    border-radius: 999px; padding: 1px 9px;
-  }
-  .projects ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
-  @media (min-width: 620px) { .projects ul { grid-template-columns: 1fr 1fr; } }
-
-  .card {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 20px;
-    box-shadow: var(--shadow);
-    display: flex; flex-direction: column;
-    transition: transform 0.18s ease, border-color 0.18s ease;
-  }
-  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
-  .card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
-  .card h3 { margin: 0; font-size: 1.2rem; letter-spacing: -0.01em; }
-  .card h3 a { text-decoration: none; }
-  .card h3 a:hover { color: var(--accent); }
-  .live {
-    flex: none; display: inline-flex; align-items: center; gap: 6px;
-    font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
-  }
-  .pulse {
-    width: 7px; height: 7px; border-radius: 999px; background: var(--pulse);
-    box-shadow: 0 0 0 0 color-mix(in srgb, var(--pulse) 60%, transparent);
-    animation: pulse 2.4s ease-out infinite;
-  }
-  @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--pulse) 55%, transparent); }
-    70% { box-shadow: 0 0 0 7px transparent; }
-    100% { box-shadow: 0 0 0 0 transparent; }
-  }
-  @media (prefers-reduced-motion: reduce) { .pulse { animation: none; } }
-
-  .card-tagline { margin: 10px 0 0; color: var(--muted); font-size: 0.95rem; flex: 1; }
-  .card-stack {
-    margin: 12px 0 0; font-size: 0.78rem; color: var(--muted);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  }
-  .card-links { margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.88rem; }
-  .card-links a { color: var(--accent); text-decoration: none; }
-  .card-links a:hover { text-decoration: underline; }
+  .work-links { margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 0.9rem; }
 
   footer {
-    margin-top: clamp(44px, 10vw, 72px);
-    padding-top: 16px; border-top: 1px solid var(--line);
-    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px;
-    font-size: 0.82rem; color: var(--muted);
+    margin-top: clamp(48px, 11vw, 80px);
+    color: var(--faint); font-size: 0.85rem;
   }
-  footer a { text-decoration: none; }
-  footer a:hover { color: var(--text); }
+
+  @media (max-width: 460px) {
+    .works li { grid-template-columns: 1fr; }
+    .num { display: none; }
+  }
 </style>
