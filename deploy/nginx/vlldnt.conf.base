@@ -7,10 +7,29 @@
 #   /opt/vlldnt/nginx/generated/apps/*.conf      (blocs server complets)
 #   /opt/vlldnt/nginx/generated/landings/*.conf  (blocs location, inclus ci-dessous)
 
-# --- HTTP : redirection vers HTTPS -------------------------------------
+# --- Catch-all : *.vlldnt.fr sans vhost dédié -> 404 -----------------
+# Le DNS wildcard fait pointer tout <x>.vlldnt.fr vers ce VPS ; sans bloc
+# server correspondant, on renvoie 404 (et pas le portfolio).
 server {
     listen 80 default_server;
     listen [::]:80 default_server;
+    server_name _;
+    return 404;
+}
+server {
+    listen 443 ssl default_server;
+    listen [::]:443 ssl default_server;
+    http2 on;
+    server_name _;
+    ssl_certificate     /etc/letsencrypt/live/vlldnt.fr/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/vlldnt.fr/privkey.pem;
+    return 404;
+}
+
+# --- HTTP : redirection vers HTTPS -------------------------------------
+server {
+    listen 80;
+    listen [::]:80;
     server_name vlldnt.fr www.vlldnt.fr;
     location / { return 301 https://vlldnt.fr$request_uri; }
 }
@@ -28,8 +47,8 @@ server {
 
 # --- HTTPS : le portfolio ------------------------------------------
 server {
-    listen 443 ssl default_server;
-    listen [::]:443 ssl default_server;
+    listen 443 ssl;
+    listen [::]:443 ssl;
     http2 on;
     server_name vlldnt.fr;
     server_tokens off;
