@@ -97,7 +97,7 @@ const projects = (cfg.projects ?? [])
               <span class="num">{String(i + 1).padStart(2, "0")}</span>
               <div class="work">
                 <div class="work-title">
-                  {p.logo && <img src={p.logo} width="22" height="22" alt="" />}
+                  {p.logo && <img src={p.logo} width="28" height="28" alt="" />}
                   <h3><a href={p.app}>{p.title}</a></h3>
                 </div>
                 {p.cover && (
@@ -188,18 +188,25 @@ const projects = (cfg.projects ?? [])
   #theme-toggle[data-state="auto"] .i-auto { display: block; }
   #theme-toggle[data-state="auto"] .i-moon { display: none; }
 
-  .masthead { }
+  .masthead {
+    margin: calc(-1 * clamp(40px, 9vw, 88px)) -24px clamp(28px, 6vw, 44px);
+    padding: clamp(32px, 8vw, 64px) 24px clamp(28px, 6vw, 44px);
+    background: #0d1b2e;
+    text-align: center;
+  }
   .masthead img {
     display: block;
-    width: clamp(180px, 46vw, 264px);
+    margin: 0 auto;
+    width: clamp(260px, 72vw, 400px);
     height: auto;
     border-radius: 16px;
   }
   .masthead .name {
-    margin: 18px 0 0;
+    margin: 16px 0 0;
     font-family: var(--serif);
     font-size: 1.3rem;
     letter-spacing: -0.01em;
+    color: #e6e4df;
   }
 
   .intro { margin-top: clamp(28px, 6vw, 44px); }
@@ -208,25 +215,39 @@ const projects = (cfg.projects ?? [])
 
   .works { margin-top: clamp(48px, 11vw, 80px); }
   .works h2 {
-    margin: 0 0 8px;
+    margin: 0 0 16px;
     font-size: 0.78rem; font-weight: 600;
     letter-spacing: 0.14em; text-transform: uppercase;
     color: var(--faint);
   }
-  .works ol { list-style: none; margin: 0; padding: 0; }
-  .works li {
+  .works ol {
+    list-style: none; margin: 0; padding: 0;
     display: grid;
-    grid-template-columns: 2.5rem 1fr;
-    gap: 4px 0;
-    padding: 26px 0;
-    border-top: 1px solid var(--rule);
+    grid-template-columns: 1fr;
+    gap: 18px;
   }
-  .works li:last-child { border-bottom: 1px solid var(--rule); }
-  .num { font-family: var(--mono); font-size: 0.82rem; color: var(--faint); padding-top: 5px; }
+  .works li {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border: 1px solid var(--rule);
+    border-radius: 12px;
+  }
+  .num { font-family: var(--mono); font-size: 0.82rem; color: var(--faint); margin-bottom: 6px; }
+
+  /* Format PC : au moins deux colonnes, section élargie hors de la colonne de lecture. */
+  @media (min-width: 760px) {
+    .works {
+      width: min(52rem, 92vw);
+      margin-left: 50%;
+      transform: translateX(-50%);
+    }
+    .works ol { grid-template-columns: repeat(2, 1fr); }
+  }
 
   .work-title { display: flex; align-items: center; gap: 9px; }
   .work-title img { border-radius: 5px; flex: none; }
-  .work h3 { margin: 0; font-family: var(--serif); font-size: 1.4rem; font-weight: 600; letter-spacing: -0.01em; }
+  .work h3 { margin: 0; font-family: var(--serif); font-size: 1.25rem; font-weight: 600; letter-spacing: -0.01em; }
   .work h3 a { color: var(--text); }
   .work h3 a:hover { color: var(--accent); text-decoration: none; }
 
@@ -255,7 +276,6 @@ const projects = (cfg.projects ?? [])
   }
 
   @media (max-width: 460px) {
-    .works li { grid-template-columns: 1fr; }
     .num { display: none; }
   }
 </style>
