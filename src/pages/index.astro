@@ -73,7 +73,6 @@ const projects = (cfg.projects ?? [])
     <div class="page">
       <header class="masthead">
         <img src="/logo.png" width="600" height="600" alt="Vieilledent Conseil — Tom Vieilledent, développeur full stack" />
-        <p class="name">Tom Vieilledent</p>
       </header>
 
       <section class="intro">
@@ -188,25 +187,13 @@ const projects = (cfg.projects ?? [])
   #theme-toggle[data-state="auto"] .i-auto { display: block; }
   #theme-toggle[data-state="auto"] .i-moon { display: none; }
 
-  .masthead {
-    margin: calc(-1 * clamp(40px, 9vw, 88px)) -24px clamp(28px, 6vw, 44px);
-    padding: clamp(32px, 8vw, 64px) 24px clamp(28px, 6vw, 44px);
-    background: #0d1b2e;
-    text-align: center;
-  }
+  .masthead { text-align: center; }
   .masthead img {
     display: block;
     margin: 0 auto;
     width: clamp(260px, 72vw, 400px);
     height: auto;
     border-radius: 16px;
-  }
-  .masthead .name {
-    margin: 16px 0 0;
-    font-family: var(--serif);
-    font-size: 1.3rem;
-    letter-spacing: -0.01em;
-    color: #e6e4df;
   }
 
   .intro { margin-top: clamp(28px, 6vw, 44px); }
