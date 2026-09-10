@@ -159,7 +159,9 @@ build_static() { # $1=src  $2=build_cmd(""=auto)  $3=output("")
   local dir
   if [[ -n "$cmd" ]]; then
     log "build : $cmd"
-    ( cd "$src" && eval "$cmd" ) || die "build échoué dans $src"
+    # Sortie du build → stderr : cette fonction est appelée en $(...) et ne
+    # doit renvoyer QUE le chemin du dossier de sortie sur stdout.
+    ( cd "$src" && eval "$cmd" ) >&2 || die "build échoué dans $src"
     dir="$src/${out:-dist}"
   else
     dir="$src"                       # pas de build : on publie le dépôt tel quel
