@@ -161,7 +161,11 @@ build_static() { # $1=src  $2=build_cmd(""=auto)  $3=output("")
     log "build : $cmd"
     # Sortie du build → stderr : cette fonction est appelée en $(...) et ne
     # doit renvoyer QUE le chemin du dossier de sortie sur stdout.
-    ( cd "$src" && eval "$cmd" ) >&2 || die "build échoué dans $src"
+    if ! ( cd "$src" && eval "$cmd" ) >&2; then
+      warn "build échoué — nettoyage du cache npm et 2e essai"
+      ( cd "$src" && rm -rf node_modules && npm cache clean --force && eval "$cmd" ) >&2 \
+        || die "build échoué (2 essais) dans $src"
+    fi
     dir="$src/${out:-dist}"
   else
     dir="$src"                       # pas de build : on publie le dépôt tel quel
