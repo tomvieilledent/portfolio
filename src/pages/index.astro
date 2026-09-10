@@ -34,6 +34,7 @@ const projects = (cfg.projects ?? [])
     role: p.role ?? "",
     logo: p.logo ?? "",
     cover: coverFor(p.name),
+    wip: p.wip === true,
     repo: String(p.repo || "").replace(/^https:\/\/github\.com\//, "").replace(/\.git$/, ""),
     landing: `/${p.name}/`,
     app: `https://${p.name}.vlldnt.fr`,
@@ -89,7 +90,8 @@ const projects = (cfg.projects ?? [])
               <div class="work">
                 <div class="work-title">
                   {p.logo && <img src={p.logo} width="28" height="28" alt="" />}
-                  <h3><a href={p.app}>{p.title}</a></h3>
+                  <h3>{p.wip ? p.title : <a href={p.app}>{p.title}</a>}</h3>
+                  {p.wip && <span class="tag">En construction</span>}
                 </div>
                 {p.cover && (
                   <a class="shot" href={p.landing} aria-label={`Aperçu de ${p.title}`}>
@@ -102,7 +104,7 @@ const projects = (cfg.projects ?? [])
                   {p.stack && <span>{p.stack}</span>}
                 </p>
                 <p class="work-links">
-                  <a href={p.app}>Site en ligne</a>
+                  {!p.wip && <a href={p.app}>Site en ligne</a>}
                   <a href={p.landing}>Présentation</a>
                   <a href={`https://github.com/${p.repo}`}>Code source</a>
                 </p>

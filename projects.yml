@@ -33,10 +33,11 @@ projects:
 
   - name: tilleul-canac
     title: Le Tilleul de Canac
-    tagline: Site d'une chambre d'hôtes près de Rodez — présentation, galerie, calendrier de disponibilités synchronisé depuis Booking, carte.
+    tagline: Site vitrine d'une chambre d'hôtes en Aveyron — présentation, galerie et disponibilités.
     stack: React · Vite · Leaflet
-    role: Projet client — conception, développement, déploiement
+    role: Projet client — conception et développement
     logo: /logos/tilleul-canac.svg
+    wip: true                    # en construction : pas de lien public vers l'app
     repo: https://github.com/tomvieilledent/tilleul-canac.git
     branch: main
     deployed: true
