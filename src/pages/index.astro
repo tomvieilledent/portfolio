@@ -1,8 +1,29 @@
 ---
 import { parse } from "yaml";
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
 const cfg = parse(readFileSync(new URL("../../projects.yml", import.meta.url), "utf8"));
+
+// Illustration d'une carte : projects/<name>/landing-page/portfolio.png, si le
+// dépôt du projet en fournit une. Elle est déjà publiée par la landing, donc
+// servie telle quelle sous vlldnt.fr/<name>/portfolio.png — on ne la copie pas.
+// Les chemins candidats couvrent le repo local et l'arbo VPS (/opt/vlldnt).
+const pfRoot = new URL("../../", import.meta.url);
+const coverFor = (name) => {
+  const rels = [
+    `../projects/${name}/landing-page/portfolio.png`,        // repo local (vlldnt.fr/projects/<name>/)
+    `../projects/${name}/src/landing-page/portfolio.png`,    // VPS : /opt/vlldnt/projects/<name>/src/
+    `../../projects/${name}/landing-page/portfolio.png`,
+    `../../projects/${name}/src/landing-page/portfolio.png`,
+    `../landing-pages/${name}/portfolio.png`,                // VPS : landing déjà publiée
+    `../../landing-pages/${name}/portfolio.png`,
+  ];
+  return rels.some((r) => existsSync(fileURLToPath(new URL(r, pfRoot))))
+    ? `/${name}/portfolio.png`
+    : "";
+};
+
 const projects = (cfg.projects ?? [])
   .filter((p) => p.deployed === true)
   .map((p) => ({
@@ -12,6 +33,7 @@ const projects = (cfg.projects ?? [])
     stack: p.stack ?? "",
     role: p.role ?? "",
     logo: p.logo ?? "",
+    cover: coverFor(p.name),
     repo: String(p.repo || "").replace(/^https:\/\/github\.com\//, "").replace(/\.git$/, ""),
     landing: `/${p.name}/`,
     app: `https://${p.name}.vlldnt.fr`,
@@ -78,6 +100,11 @@ const projects = (cfg.projects ?? [])
                   {p.logo && <img src={p.logo} width="22" height="22" alt="" />}
                   <h3><a href={p.app}>{p.title}</a></h3>
                 </div>
+                {p.cover && (
+                  <a class="shot" href={p.landing} aria-label={`Aperçu de ${p.title}`}>
+                    <img src={p.cover} alt={`Capture d’écran de ${p.title}`} loading="lazy" decoding="async" />
+                  </a>
+                )}
                 {p.tagline && <p class="desc">{p.tagline}</p>}
                 <p class="meta">
                   {p.role && <span>{p.role}</span>}
@@ -202,6 +229,17 @@ const projects = (cfg.projects ?? [])
   .work h3 { margin: 0; font-family: var(--serif); font-size: 1.4rem; font-weight: 600; letter-spacing: -0.01em; }
   .work h3 a { color: var(--text); }
   .work h3 a:hover { color: var(--accent); text-decoration: none; }
+
+  .shot {
+    display: block;
+    margin: 14px 0 2px;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--rule);
+  }
+  .shot img { display: block; width: 100%; height: auto; }
+  .shot:hover { border-color: var(--muted); }
 
   .desc { margin: 10px 0 0; color: var(--muted); max-width: 32rem; }
   .meta {
