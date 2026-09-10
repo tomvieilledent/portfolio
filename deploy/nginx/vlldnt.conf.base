@@ -62,6 +62,7 @@ server {
 
     location / {
         include /opt/vlldnt/nginx/snippets/security-headers.conf;
+        add_header Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'" always;
         add_header Cache-Control "no-cache" always;
         try_files $uri $uri/ /index.html;
     }
