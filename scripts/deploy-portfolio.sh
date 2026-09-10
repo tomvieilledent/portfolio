@@ -39,8 +39,10 @@ fi
 step "build du site perso"
 PF_OUT="$(yq '.portfolio.output // "dist"' "$SRC/projects.yml" 2>/dev/null || echo dist)"
 BUILT="$(build_static "$SRC" "" "$PF_OUT")"
-TS="$(date +%Y%m%d-%H%M%S)"
-cp -a "$BUILT" "$PORTFOLIO_DIR/releases/$TS"
+TS="$(date +%Y%m%d-%H%M%S)-$$"
+rm -rf "$PORTFOLIO_DIR/releases/$TS"; mkdir -p "$PORTFOLIO_DIR/releases/$TS"
+cp -a "$BUILT/." "$PORTFOLIO_DIR/releases/$TS/"
+[[ -f "$PORTFOLIO_DIR/releases/$TS/index.html" ]] || die "release sans index.html"
 promote_release "$PORTFOLIO_DIR" "$TS"
 log "publié : $PORTFOLIO_DIR/current -> releases/$TS"
 

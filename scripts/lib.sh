@@ -149,22 +149,18 @@ backup_paths() { # $1=préfixe nom d'archive ; $@ = chemins à archiver
 # lui-même si aucun build n'est nécessaire.
 build_static() { # $1=src  $2=build_cmd(""=auto)  $3=output("")
   local src="$1" cmd="$2" out="$3"
-  if [[ -z "$cmd" && -f "$src/package.json" ]]; then
-    if [[ -f "$src/package-lock.json" ]]; then
-      cmd="npm ci --no-audit --no-fund && npm run build"
-    else
-      cmd="npm install --no-audit --no-fund && npm run build"
-    fi
-  fi
+  # `npm install` (et pas `npm ci`) : plus tolérant si le cache npm du VPS
+  # est abîmé — le cas se produit par intermittence sur cette machine.
+  [[ -z "$cmd" && -f "$src/package.json" ]] && cmd="npm install --no-audit --no-fund && npm run build"
   local dir
   if [[ -n "$cmd" ]]; then
     log "build : $cmd"
     # Sortie du build → stderr : cette fonction est appelée en $(...) et ne
     # doit renvoyer QUE le chemin du dossier de sortie sur stdout.
     if ! ( cd "$src" && eval "$cmd" ) >&2; then
-      warn "build échoué — nettoyage du cache npm et 2e essai"
-      ( cd "$src" && rm -rf node_modules && npm cache clean --force && eval "$cmd" ) >&2 \
-        || die "build échoué (2 essais) dans $src"
+      warn "build échoué — purge node_modules + cache npm, 2e essai"
+      ( cd "$src" && rm -rf node_modules "${HOME:-/home/deploy}/.npm/_cacache" \
+          && eval "$cmd" ) >&2 || die "build échoué (2 essais) dans $src"
     fi
     dir="$src/${out:-dist}"
   else
