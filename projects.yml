@@ -23,7 +23,7 @@ projects:
   - name: flashcard
     repo: https://github.com/tomvieilledent/flashcard.git
     branch: main
-    deployed: false            # passer à true une fois le VPS provisionné (/opt/vlldnt + wildcard)
+    deployed: true
     runtime: static            # static | compose
     # output: dist             # (optionnel) dossier de build, défaut dist
     # build: "npm ci && npm run build"   # (optionnel) commande de build, sinon auto si package.json
