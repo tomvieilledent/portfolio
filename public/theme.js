@@ -1,34 +1,42 @@
-/* Bascule de thème auto → clair → sombre → auto, persistée (localStorage).
-   Chargée en <head> (bloquante) : data-theme posé avant le 1er rendu. */
+/* Bascule clair / sombre, persistée (localStorage). Sans préférence
+   enregistrée, on suit le système. Chargé en <head> (bloquant) : le
+   data-theme est posé avant le 1er rendu, donc pas de flash. */
 (function () {
   var KEY = "vlldnt:theme";
   var root = document.documentElement;
+  var mq = window.matchMedia("(prefers-color-scheme: dark)");
 
-  function apply(t) {
-    if (t === "light" || t === "dark") root.setAttribute("data-theme", t);
+  function stored() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+  function effective() {
+    var s = stored();
+    return s === "light" || s === "dark" ? s : (mq.matches ? "dark" : "light");
+  }
+  function apply(v) {
+    if (v === "light" || v === "dark") root.setAttribute("data-theme", v);
     else root.removeAttribute("data-theme");
   }
-
-  var stored = null;
-  try { stored = localStorage.getItem(KEY); } catch (e) {}
-  apply(stored);
+  apply(stored());
 
   document.addEventListener("DOMContentLoaded", function () {
     var btn = document.getElementById("theme-toggle");
     if (!btn) return;
     function refresh() {
-      var cur = root.getAttribute("data-theme") || "auto";
-      btn.dataset.state = cur;
-      btn.setAttribute("aria-label", "Thème : " + cur + ". Cliquer pour changer.");
+      var cur = effective();
+      btn.dataset.theme = cur;
+      btn.setAttribute("aria-label", cur === "dark" ? "Passer en mode clair" : "Passer en mode sombre");
     }
     btn.hidden = false;
     refresh();
     btn.addEventListener("click", function () {
-      var cur = root.getAttribute("data-theme");
-      var next = cur === null ? "light" : cur === "light" ? "dark" : null;
+      var next = effective() === "dark" ? "light" : "dark";
       apply(next);
-      try { next ? localStorage.setItem(KEY, next) : localStorage.removeItem(KEY); } catch (e) {}
+      try { localStorage.setItem(KEY, next); } catch (e) {}
       refresh();
     });
+  });
+
+  // Si l'utilisateur n'a pas fait de choix, suivre les changements système.
+  mq.addEventListener && mq.addEventListener("change", function () {
+    if (!stored()) { apply(null); var b = document.getElementById("theme-toggle"); if (b) b.dataset.theme = effective(); }
   });
 })();

@@ -50,7 +50,9 @@ const projects = (cfg.projects ?? [])
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="canonical" href="https://vlldnt.fr/" />
-    <meta name="theme-color" content="#0B1220" />
+    <meta name="theme-color" content="#0B1220" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f7f6f3" media="(prefers-color-scheme: light)" />
+    <script is:inline src="/theme.js"></script>
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://vlldnt.fr/" />
     <meta property="og:title" content="Tom Vieilledent — Vieilledent Conseil" />
@@ -63,6 +65,11 @@ const projects = (cfg.projects ?? [])
     <title>Tom Vieilledent — développeur fullstack</title>
   </head>
   <body>
+    <button id="theme-toggle" type="button" hidden aria-label="Changer de thème">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M12 3v2M12 19v2M5 5l1.5 1.5M17.5 17.5L19 19M3 12h2M19 12h2M5 19l1.5-1.5M17.5 6.5L19 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+    </button>
+
     <div class="page">
       <header class="masthead">
         <img src="/logo.png" width="600" height="600" alt="Vieilledent Conseil — Tom Vieilledent, développeur full stack" />
@@ -122,6 +129,8 @@ const projects = (cfg.projects ?? [])
 </html>
 
 <style>
+  /* Sombre = défaut. Clair : préférence système (sans choix explicite) ou
+     bouton (data-theme). theme.js pose data-theme avant le 1er rendu. */
   :root {
     --bg: #0B1220;
     --text: #e6e4df;
@@ -129,10 +138,28 @@ const projects = (cfg.projects ?? [])
     --faint: #6f6f68;
     --rule: #2a2c33;
     --accent: #7ba0ff;
+    --panel: rgba(255, 255, 255, 0.02);
     color-scheme: dark;
     --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
     --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme]) {
+      --bg: #f7f6f3; --text: #1b1b1a; --muted: #5c5c56; --faint: #8f8f88;
+      --rule: #e4e2db; --accent: #2148c0; --panel: rgba(20, 20, 18, 0.02);
+      color-scheme: light;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #f7f6f3; --text: #1b1b1a; --muted: #5c5c56; --faint: #8f8f88;
+    --rule: #e4e2db; --accent: #2148c0; --panel: rgba(20, 20, 18, 0.02);
+    color-scheme: light;
+  }
+  :root[data-theme="dark"] {
+    --bg: #0B1220; --text: #e6e4df; --muted: #9a9a92; --faint: #6f6f68;
+    --rule: #2a2c33; --accent: #7ba0ff; --panel: rgba(255, 255, 255, 0.02);
+    color-scheme: dark;
   }
 
   * { box-sizing: border-box; }
@@ -144,7 +171,21 @@ const projects = (cfg.projects ?? [])
     font-size: 16px;
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
+
+  #theme-toggle {
+    position: fixed; top: 16px; right: 16px; z-index: 20;
+    width: 36px; height: 36px; display: grid; place-items: center;
+    border: 1px solid var(--rule); border-radius: 9px;
+    background: var(--bg); color: var(--faint); cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+  }
+  #theme-toggle:hover { color: var(--text); border-color: var(--muted); }
+  #theme-toggle svg { width: 17px; height: 17px; }
+  #theme-toggle .i-sun { display: none; }
+  #theme-toggle[data-theme="dark"] .i-sun { display: block; }
+  #theme-toggle[data-theme="dark"] .i-moon { display: none; }
   a { color: var(--accent); text-decoration: none; }
   a:hover { text-decoration: underline; text-underline-offset: 2px; }
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
