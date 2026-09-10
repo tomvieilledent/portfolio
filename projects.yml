@@ -21,12 +21,18 @@ portfolio:
 
 projects:
   - name: flashcard
+    title: Flashcard
+    tagline: Carnet de révision — toutes les notions de développement fullstack vues en cours, expliquées et reliées.
+    stack: React · Vite
     repo: https://github.com/tomvieilledent/flashcard.git
     branch: main
     deployed: true
     runtime: static            # static | compose
 
   - name: tilleul-canac
+    title: Le Tilleul de Canac
+    tagline: Site de la chambre d'hôtes près de Rodez — calendrier Booking synchronisé, carte, avis.
+    stack: React · Vite · Leaflet
     repo: https://github.com/tomvieilledent/tilleul-canac.git
     branch: main
     deployed: true

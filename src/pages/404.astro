@@ -6,23 +6,39 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <meta name="theme-color" content="#0d1b2e" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f6f7f9" media="(prefers-color-scheme: light)" />
+    <script is:inline src="/theme.js"></script>
     <title>404 — page introuvable</title>
   </head>
   <body>
     <main>
-      <h1>404</h1>
-      <p>Cette page n'existe pas. <a href="/">Retour à l'accueil</a></p>
+      <p class="code">404</p>
+      <h1>Cette page n'existe pas.</h1>
+      <p><a href="/">← Retour à l'accueil</a></p>
     </main>
   </body>
 </html>
 
 <style>
+  :root {
+    --bg: #f6f7f9; --text: #16181d; --muted: #5b6270; --accent: #2f6df6;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme]) { --bg: #0d1220; --text: #e9ecf1; --muted: #97a1b4; --accent: #6ea0ff; color-scheme: dark; }
+  }
+  :root[data-theme="dark"] { --bg: #0d1220; --text: #e9ecf1; --muted: #97a1b4; --accent: #6ea0ff; color-scheme: dark; }
+  :root[data-theme="light"] { --bg: #f6f7f9; --text: #16181d; --muted: #5b6270; --accent: #2f6df6; color-scheme: light; }
+
   body {
-    font: 16px/1.6 system-ui, sans-serif;
-    margin: 0; min-height: 100dvh;
-    display: grid; place-items: center;
-    background: Canvas; color: CanvasText;
+    margin: 0; min-height: 100dvh; display: grid; place-items: center;
+    background: var(--bg); color: var(--text);
+    font: 16px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
   main { padding: 2rem; text-align: center; }
-  a { color: inherit; }
+  .code { margin: 0; font-size: 3rem; font-weight: 700; letter-spacing: -0.03em; color: var(--muted); }
+  h1 { margin: 0.25rem 0 1rem; font-size: 1.3rem; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
 </style>
