@@ -25,6 +25,12 @@ projects:
     branch: main
     deployed: true
     runtime: static            # static | compose
+
+  - name: tilleul-canac
+    repo: https://github.com/tomvieilledent/tilleul-canac.git
+    branch: main
+    deployed: true
+    runtime: static
     # output: dist             # (optionnel) dossier de build, défaut dist
     # build: "npm ci && npm run build"   # (optionnel) commande de build, sinon auto si package.json
     # csp: "default-src 'self'; script-src 'self' 'sha256-XXXX'; ..."  # (optionnel) CSP spécifique
