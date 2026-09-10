@@ -49,8 +49,7 @@ const projects = (cfg.projects ?? [])
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="canonical" href="https://vlldnt.fr/" />
-    <meta name="theme-color" content="#0d1b2e" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#faf9f7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0B1220" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://vlldnt.fr/" />
     <meta property="og:title" content="Tom Vieilledent — Vieilledent Conseil" />
@@ -60,16 +59,9 @@ const projects = (cfg.projects ?? [])
     <meta property="og:image:height" content="1200" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:image" content="https://vlldnt.fr/og.jpg" />
-    <script is:inline src="/theme.js"></script>
     <title>Tom Vieilledent — développeur fullstack</title>
   </head>
   <body>
-    <button id="theme-toggle" type="button" hidden aria-label="Changer de thème">
-      <svg class="i-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-      <svg class="i-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M12 3v2M12 19v2M5 5l1.5 1.5M17.5 17.5L19 19M3 12h2M19 12h2M5 19l1.5-1.5M17.5 6.5L19 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-      <svg class="i-auto" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.6"/><path d="M12 4v16A8 8 0 0 0 12 4Z" fill="currentColor"/></svg>
-    </button>
-
     <div class="page">
       <header class="masthead">
         <img src="/logo.png" width="600" height="600" alt="Vieilledent Conseil — Tom Vieilledent, développeur full stack" />
@@ -129,31 +121,16 @@ const projects = (cfg.projects ?? [])
 
 <style>
   :root {
-    --bg: #faf9f7;
-    --text: #1a1a1a;
-    --muted: #6b6b6b;
-    --faint: #9a9a94;
-    --rule: #e2e0da;
-    --accent: #1d4ed8;
-    color-scheme: light;
+    --bg: #0B1220;
+    --text: #e6e4df;
+    --muted: #9a9a92;
+    --faint: #6f6f68;
+    --rule: #2a2c33;
+    --accent: #7ba0ff;
+    color-scheme: dark;
     --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
     --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme]) {
-      --bg: #12141a; --text: #e6e4df; --muted: #9a9a92; --faint: #6f6f68;
-      --rule: #2a2c33; --accent: #7ba0ff;
-      color-scheme: dark;
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #12141a; --text: #e6e4df; --muted: #9a9a92; --faint: #6f6f68;
-    --rule: #2a2c33; --accent: #7ba0ff; color-scheme: dark;
-  }
-  :root[data-theme="light"] {
-    --bg: #faf9f7; --text: #1a1a1a; --muted: #6b6b6b; --faint: #9a9a94;
-    --rule: #e2e0da; --accent: #1d4ed8; color-scheme: light;
   }
 
   * { box-sizing: border-box; }
@@ -171,21 +148,6 @@ const projects = (cfg.projects ?? [])
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
   .page { max-width: 40rem; margin: 0 auto; padding: clamp(40px, 9vw, 88px) 24px clamp(56px, 12vw, 112px); }
-
-  #theme-toggle {
-    position: fixed; top: 16px; right: 16px; z-index: 10;
-    width: 34px; height: 34px; display: grid; place-items: center;
-    border: 1px solid var(--rule); border-radius: 8px;
-    background: transparent; color: var(--faint); cursor: pointer;
-    transition: color 0.15s ease, border-color 0.15s ease;
-  }
-  #theme-toggle:hover { color: var(--text); border-color: var(--muted); }
-  #theme-toggle svg { width: 17px; height: 17px; }
-  #theme-toggle .i-sun, #theme-toggle .i-auto { display: none; }
-  #theme-toggle[data-state="light"] .i-sun { display: block; }
-  #theme-toggle[data-state="light"] .i-moon { display: none; }
-  #theme-toggle[data-state="auto"] .i-auto { display: block; }
-  #theme-toggle[data-state="auto"] .i-moon { display: none; }
 
   .masthead { text-align: center; }
   .masthead img {
