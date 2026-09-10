@@ -50,11 +50,8 @@ const projects = (cfg.projects ?? [])
 
     <div class="page">
       <header class="masthead">
-        <img src="/logo.png" width="76" height="76" alt="Vieilledent Conseil" />
-        <div>
-          <p class="name">Tom Vieilledent</p>
-          <p class="role">Développeur fullstack indépendant — <span>Vieilledent&nbsp;Conseil</span></p>
-        </div>
+        <img src="/logo.png" width="600" height="600" alt="Vieilledent Conseil — Tom Vieilledent, développeur full stack" />
+        <p class="name">Tom Vieilledent</p>
       </header>
 
       <section class="intro">
@@ -164,13 +161,21 @@ const projects = (cfg.projects ?? [])
   #theme-toggle[data-state="auto"] .i-auto { display: block; }
   #theme-toggle[data-state="auto"] .i-moon { display: none; }
 
-  .masthead { display: flex; align-items: center; gap: 16px; }
-  .masthead img { border-radius: 12px; flex: none; }
-  .masthead .name { margin: 0; font-family: var(--serif); font-size: 1.35rem; letter-spacing: -0.01em; }
-  .masthead .role { margin: 2px 0 0; color: var(--muted); font-size: 0.92rem; }
-  .masthead .role span { color: var(--text); }
+  .masthead { }
+  .masthead img {
+    display: block;
+    width: clamp(180px, 46vw, 264px);
+    height: auto;
+    border-radius: 16px;
+  }
+  .masthead .name {
+    margin: 18px 0 0;
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    letter-spacing: -0.01em;
+  }
 
-  .intro { margin-top: clamp(36px, 8vw, 56px); }
+  .intro { margin-top: clamp(28px, 6vw, 44px); }
   .intro p { margin: 0; max-width: 34rem; }
   .intro .links { margin-top: 16px; font-size: 0.92rem; color: var(--faint); display: flex; gap: 10px; flex-wrap: wrap; }
 
