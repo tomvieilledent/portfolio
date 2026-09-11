@@ -32,7 +32,8 @@ projects:
     repo: https://github.com/tomvieilledent/flashcard.git
     branch: main
     deployed: true
-    runtime: static            # static | compose
+    runtime: compose            # static | compose
+    port: 8084                  # port loopback interne
 
   - name: tilleul-canac
     title: Le Tilleul de Canac
@@ -44,14 +45,9 @@ projects:
     repo: https://github.com/tomvieilledent/tilleul-canac.git
     branch: main
     deployed: true
-    runtime: static
-    # output: dist             # (optionnel) dossier de build, défaut dist
-    # build: "npm ci && npm run build"   # (optionnel) commande de build, sinon auto si package.json
-    # csp: "default-src 'self'; script-src 'self' 'sha256-XXXX'; ..."  # (optionnel) CSP spécifique
-    #
-    # -- champs runtime: compose --
-    # port: 8082               # port loopback interne (obligatoire si compose)
-    # compose_file: compose.yml
+    runtime: compose
+    port: 8085                  # port loopback interne (compose_file: compose.yml par défaut,
+                                 # à la racine du dépôt — le backend a le sien sous backend/)
 
   - name: tilleul-canac-api
     public: false               # API de réservation du Tilleul de Canac — pas de vitrine
