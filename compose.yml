@@ -1,0 +1,15 @@
+# Conteneur du portfolio (vlldnt.fr). PAS ENCORE branché en prod : le vhost
+# apex (deploy/nginx/vlldnt.conf.base) sert toujours /opt/vlldnt/portfolio/current
+# directement, et deploy-portfolio.sh ne sait pas encore lancer ce compose.yml
+# (contrairement à deploy-project.sh pour les projets). Bascule à faire
+# volontairement, une fois Docker validé sur les 3 autres services. Voir
+# PROMPT-containerisation-vlldnt.md.
+services:
+  web:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${PORT:-8086}:8080"
+    logging:
+      driver: json-file
+      options: { max-size: "10m", max-file: "3" }
