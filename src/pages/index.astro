@@ -1,28 +1,14 @@
 ---
 import { parse } from "yaml";
-import { readFileSync, existsSync } from "node:fs";
-import { fileURLToPath } from "node:url";
+import { readFileSync } from "node:fs";
 
 const cfg = parse(readFileSync(new URL("../../projects.yml", import.meta.url), "utf8"));
 
-// Illustration d'une carte : projects/<name>/landing-page/portfolio.png, si le
-// dépôt du projet en fournit une. Elle est déjà publiée par la landing, donc
-// servie telle quelle sous vlldnt.fr/<name>/portfolio.png — on ne la copie pas.
-// Les chemins candidats couvrent le repo local et l'arbo VPS (/opt/vlldnt).
-const pfRoot = new URL("../../", import.meta.url);
-const coverFor = (name) => {
-  const rels = [
-    `../projects/${name}/landing-page/portfolio.png`,        // repo local (vlldnt.fr/projects/<name>/)
-    `../projects/${name}/src/landing-page/portfolio.png`,    // VPS : /opt/vlldnt/projects/<name>/src/
-    `../../projects/${name}/landing-page/portfolio.png`,
-    `../../projects/${name}/src/landing-page/portfolio.png`,
-    `../landing-pages/${name}/portfolio.png`,                // VPS : landing déjà publiée
-    `../../landing-pages/${name}/portfolio.png`,
-  ];
-  return rels.some((r) => existsSync(fileURLToPath(new URL(r, pfRoot))))
-    ? `/${name}/portfolio.png`
-    : "";
-};
+// Illustration d'une carte : projects/<name>/landing-page/portfolio.png, publiée
+// par la landing du projet et servie telle quelle sous vlldnt.fr/<name>/portfolio.png
+// par nginx (indépendamment du conteneur portfolio — pas de vérification d'existence
+// possible ici : le build tourne dans un conteneur isolé, sans accès aux autres dépôts).
+const coverFor = (name) => `/${name}/portfolio.png`;
 
 const projects = (cfg.projects ?? [])
   // `public: false` = déployé (vhost + conteneur) mais pas une vitrine (ex. une API
@@ -39,7 +25,6 @@ const projects = (cfg.projects ?? [])
     wip: p.wip === true,
     repo: String(p.repo || "").replace(/^https:\/\/github\.com\//, "").replace(/\.git$/, ""),
     landing: `/${p.name}/`,
-    app: `https://${p.name}.vlldnt.fr`,
   }));
 ---
 
@@ -99,7 +84,7 @@ const projects = (cfg.projects ?? [])
               <div class="work">
                 <div class="work-title">
                   {p.logo && <img src={p.logo} width="28" height="28" alt="" />}
-                  <h3>{p.wip ? p.title : <a href={p.app}>{p.title}</a>}</h3>
+                  <h3><a href={p.landing}>{p.title}</a></h3>
                   {p.wip && <span class="tag">En construction</span>}
                 </div>
                 {p.cover && (
@@ -113,7 +98,6 @@ const projects = (cfg.projects ?? [])
                   {p.stack && <span>{p.stack}</span>}
                 </p>
                 <p class="work-links">
-                  {!p.wip && <a href={p.app}>Site en ligne</a>}
                   <a href={p.landing}>Présentation</a>
                   <a href={`https://github.com/${p.repo}`}>Code source</a>
                 </p>
