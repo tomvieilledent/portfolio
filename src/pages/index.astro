@@ -25,7 +25,9 @@ const coverFor = (name) => {
 };
 
 const projects = (cfg.projects ?? [])
-  .filter((p) => p.deployed === true)
+  // `public: false` = déployé (vhost + conteneur) mais pas une vitrine (ex. une API
+  // backend d'un autre projet) : absent de la page d'accueil.
+  .filter((p) => p.deployed === true && p.public !== false)
   .map((p) => ({
     name: p.name,
     title: p.title ?? p.name,

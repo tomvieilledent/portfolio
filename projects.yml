@@ -11,6 +11,9 @@
 #   - entrée SUPPRIMÉE → le projet est retiré du VPS (backup + confirmation ;
 #                         les données data/<name> sont archivées, pas détruites)
 #   - `name` : ^[a-z][a-z0-9-]{1,38}$  — sert aux URLs, chemins et conteneurs
+#   - public: false     → déployé (vhost + conteneur sur <name>.vlldnt.fr) mais absent
+#                         de la page d'accueil (ex. l'API backend d'un autre projet).
+#                         Par défaut (absent) : public.
 # =====================================================================
 
 domain: vlldnt.fr
@@ -49,3 +52,14 @@ projects:
     # -- champs runtime: compose --
     # port: 8082               # port loopback interne (obligatoire si compose)
     # compose_file: compose.yml
+
+  - name: tilleul-canac-api
+    public: false               # API de réservation du Tilleul de Canac — pas de vitrine
+    repo: https://github.com/tomvieilledent/tilleul-canac.git
+    branch: main
+    deployed: true
+    runtime: compose
+    port: 8083
+    compose_file: backend/compose.yml
+    # secrets réels : /opt/vlldnt/config/tilleul-canac-api.env (hors Git, chmod 600 ;
+    # cf. backend/.env.example du dépôt pour la liste des variables)
