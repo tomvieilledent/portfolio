@@ -39,14 +39,7 @@ server {
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_prefer_server_ciphers off;
 
-    root /opt/vlldnt/portfolio/current;
-    index index.html;
     error_page 404 /404.html;
-
-    gzip on;
-    gzip_vary on;
-    gzip_min_length 512;
-    gzip_types text/plain text/css application/javascript application/json image/svg+xml;
 
     include /opt/vlldnt/nginx/snippets/security-headers.conf;
     add_header Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'" always;
@@ -54,20 +47,17 @@ server {
     # Landing pages des projets (fragments générés).
     include /opt/vlldnt/nginx/generated/landings/*.conf;
 
-    # Assets fingerprintés (Vite: /assets/, Astro: /_astro/) : cache long immuable.
-    location ~* ^/(assets|_astro)/ {
-        include /opt/vlldnt/nginx/snippets/security-headers.conf;
-        add_header Cache-Control "public, max-age=31536000, immutable" always;
-        try_files $uri =404;
-    }
-
-    # Site statique multi-pages : pas de fallback SPA. Une URL inconnue = 404
-    # (donc vlldnt.fr/<projet> sans landing déployée répond 404).
+    # Conteneur du portfolio (nginx+dist Astro, port loopback — cf. compose.yml).
+    # Cache/gzip déjà gérés dans le conteneur (deploy/nginx/portfolio.conf) ; ici
+    # on ne fait que proxy_pass + en-têtes de sécurité/CSP.
     location / {
         include /opt/vlldnt/nginx/snippets/security-headers.conf;
         add_header Content-Security-Policy "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'" always;
-        add_header Cache-Control "no-cache" always;
-        try_files $uri $uri/ =404;
+        proxy_pass http://127.0.0.1:8086;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 }
 

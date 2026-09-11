@@ -18,9 +18,9 @@
 
 domain: vlldnt.fr
 
-# Sortie de build du portfolio (dossier statique). Défaut : dist
+# Portfolio dockerisé (runtime compose, cf. compose.yml). Port loopback interne.
 portfolio:
-  output: dist
+  port: 8086
 
 projects:
   - name: flashcard
