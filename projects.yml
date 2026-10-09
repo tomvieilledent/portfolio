@@ -45,7 +45,7 @@ projects:
     branch: main
     deployed: true
     runtime: compose
-    port: 8086                  # port loopback interne
+    port: 8087                  # port loopback interne
     compose_file: compose.prod.yml
     # secrets réels : /opt/vlldnt/config/cashmire.env (hors Git, chmod 600 ;
     # voir .env.prod.example du dépôt pour la liste des variables)
