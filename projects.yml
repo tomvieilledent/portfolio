@@ -35,6 +35,21 @@ projects:
     runtime: compose            # static | compose
     port: 8084                  # port loopback interne
 
+  - name: cashmire
+    title: Cashmire
+    tagline: Suivi de dépenses et de budgets — catégories, seuils d'alerte et tableau de bord. Django, SvelteKit, PostgreSQL.
+    stack: Django · SvelteKit · PostgreSQL
+    role: Projet d'équipe Holberton — budgets, architecture, hébergement
+    logo: /logos/cashmire.svg
+    repo: https://github.com/tomvieilledent/cashmire.git
+    branch: main
+    deployed: true
+    runtime: compose
+    port: 8086                  # port loopback interne
+    compose_file: compose.prod.yml
+    # secrets réels : /opt/vlldnt/config/cashmire.env (hors Git, chmod 600 ;
+    # voir .env.prod.example du dépôt pour la liste des variables)
+
   - name: tilleul-canac
     title: Le Tilleul de Canac
     tagline: Site vitrine d'une chambre d'hôtes en Aveyron — présentation, galerie et disponibilités.
