@@ -66,6 +66,21 @@ projects:
     port: 8085                  # port loopback interne (compose_file: compose.yml par défaut,
                                  # à la racine du dépôt — le backend a le sien sous backend/)
 
+  - name: vakom-stephen
+    title: Site vitrine Vakom
+    tagline: Site vitrine d'un consultant local du réseau Vakom — expertises, solutions RH, présentation et contact.
+    stack: React · Vite · Tailwind
+    role: Projet client — conception et développement
+    logo: /logos/vakom-stephen.svg
+    wip: true                    # en construction : pas de lien public vers l'app
+    repo: https://github.com/tomvieilledent/vakom_stephen.git
+    branch: main
+    deployed: true
+    runtime: static
+    # Le build du dépôt fixe base=/vakom_stephen/ (GitHub Pages) : on force la
+    # racine pour servir l'app sur vakom-stephen.vlldnt.fr.
+    build: npm install --no-audit --no-fund && npx vite build --base=/ && node scripts/prerender.js
+
   - name: tilleul-canac-api
     public: false               # API de réservation du Tilleul de Canac — pas de vitrine
     repo: https://github.com/tomvieilledent/tilleul-canac.git
