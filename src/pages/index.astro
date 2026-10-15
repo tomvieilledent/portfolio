@@ -39,8 +39,7 @@ const projects = (cfg.projects ?? [])
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="canonical" href="https://vlldnt.fr/" />
-    <meta name="theme-color" content="#0B1220" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#f7f6f3" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0B111D" />
     <script is:inline src="/theme.js"></script>
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://vlldnt.fr/" />
@@ -59,208 +58,207 @@ const projects = (cfg.projects ?? [])
       <svg class="i-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><path d="M12 3v2M12 19v2M5 5l1.5 1.5M17.5 17.5L19 19M3 12h2M19 12h2M5 19l1.5-1.5M17.5 6.5L19 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
     </button>
 
-    <div class="page">
-      <header class="masthead">
-        <img src="/logo.png" width="600" height="600" alt="Vieilledent Conseil — Tom Vieilledent, développeur full stack" />
-      </header>
+    <header class="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-text">
+          <p class="kicker">Vieilledent Conseil</p>
+          <h1>Tom Vieilledent</h1>
+          <p class="role">Développeur full stack indépendant</p>
+          <p class="pitch">
+            Je développe des applications web sur mesure — de la conception de
+            l'interface au déploiement — et je les héberge moi-même sur un serveur
+            dédié : nginx, HTTPS, intégration et déploiement continus.
+          </p>
+          <p class="cta">
+            <a class="btn primary" href="mailto:tomvieilledent@gmail.com">Me contacter</a>
+            <a class="btn ghost" href="https://github.com/tomvieilledent">GitHub</a>
+          </p>
+        </div>
+        <img
+          class="hero-logo"
+          src="/logo.png"
+          width="600"
+          height="600"
+          alt="Vieilledent Conseil — développeur full stack"
+        />
+      </div>
+    </header>
 
-      <section class="intro">
-        <p>
-          Je développe des applications web sur mesure — de la conception
-          de l'interface au déploiement — et je les héberge moi-même sur un
-          serveur dédié : nginx, HTTPS, intégration et déploiement continus.
-        </p>
-        <p class="links">
-          <a href="mailto:tomvieilledent@gmail.com">tomvieilledent@gmail.com</a>
-          <span aria-hidden="true">·</span>
-          <a href="https://github.com/tomvieilledent">github.com/tomvieilledent</a>
-        </p>
-      </section>
-
-      <section class="works" aria-label="Réalisations en ligne">
-        <h2>Réalisations en ligne</h2>
+    <main>
+      <section class="works wrap" aria-labelledby="works-title">
+        <div class="section-head">
+          <h2 id="works-title">Réalisations</h2>
+          <p>{projects.length} projets en ligne ou en cours de construction</p>
+        </div>
         <ol>
-          {projects.map((p, i) => (
+          {projects.map((p) => (
             <li>
-              <span class="num">{String(i + 1).padStart(2, "0")}</span>
+              <a class="shot" href={p.landing} aria-label={`Voir le projet ${p.title}`} tabindex="-1">
+                <img src={p.cover} alt={`Aperçu de ${p.title}`} loading="lazy" decoding="async" />
+              </a>
               <div class="work">
                 <div class="work-title">
-                  {p.logo && <img src={p.logo} width="28" height="28" alt="" />}
                   <h3><a href={p.landing}>{p.title}</a></h3>
                   {p.wip && <span class="tag">En construction</span>}
                 </div>
-                {p.cover && (
-                  <a class="shot" href={p.landing} aria-label={`Aperçu de ${p.title}`}>
-                    <img src={p.cover} alt={`Capture d’écran de ${p.title}`} loading="lazy" decoding="async" />
-                  </a>
-                )}
                 {p.tagline && <p class="desc">{p.tagline}</p>}
-                <p class="meta">
-                  {p.role && <span>{p.role}</span>}
-                  {p.stack && <span>{p.stack}</span>}
-                </p>
+                {p.role && <p class="role-line">{p.role}</p>}
+                {p.stack && (
+                  <ul class="stack" aria-label="Technologies">
+                    {p.stack.split("·").map((t) => <li>{t.trim()}</li>)}
+                  </ul>
+                )}
                 <p class="work-links">
-                  <a href={p.landing}>Présentation</a>
-                  {p.source && <a href={`https://github.com/${p.repo}`}>Code source</a>}
+                  <a href={p.landing}>Voir le projet <span aria-hidden="true">→</span></a>
+                  {p.source && <a class="quiet" href={`https://github.com/${p.repo}`}>Code source</a>}
                 </p>
               </div>
             </li>
           ))}
         </ol>
       </section>
+    </main>
 
-      <footer>
-        Aveyron, France. Site et projets hébergés sur <a href="https://vlldnt.fr">vlldnt.fr</a>.
-      </footer>
-    </div>
+    <footer>
+      <div class="wrap foot">
+        <p>© Vieilledent Conseil — Aveyron, France.</p>
+        <p>
+          <a href="mailto:tomvieilledent@gmail.com">tomvieilledent@gmail.com</a>
+          <span aria-hidden="true"> · </span>
+          <a href="https://github.com/tomvieilledent">GitHub</a>
+        </p>
+      </div>
+    </footer>
   </body>
 </html>
 
 <style>
-  /* Sombre = défaut. Clair : préférence système (sans choix explicite) ou
-     bouton (data-theme). theme.js pose data-theme avant le 1er rendu. */
+  /* Identité tirée du logo : marine #0B111D, bleu #3E87E0, blanc.
+     Le bandeau d'en-tête reste marine dans les deux thèmes ; le reste suit
+     le thème (clair par défaut, sombre via préférence système ou bouton). */
   :root {
-    --bg: #0B1220;
-    --text: #e6e4df;
-    --muted: #9a9a92;
-    --faint: #6f6f68;
-    --rule: #2a2c33;
-    --accent: #7ba0ff;
-    --panel: rgba(255, 255, 255, 0.02);
-    color-scheme: dark;
-    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
-    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    --navy: #0B111D;
+    --navy-2: #121A2B;
+    --bg: #F4F6F9;
+    --card: #FFFFFF;
+    --text: #0B111D;
+    --muted: #536074;
+    --rule: #DFE5ED;
+    --accent: #2563B8;
+    --accent-ink: #FFFFFF;
+    --blue: #3E87E0;
+    --shadow: 0 1px 2px rgba(11, 17, 29, 0.06), 0 8px 24px -12px rgba(11, 17, 29, 0.18);
+    color-scheme: light;
+    --sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   }
-  @media (prefers-color-scheme: light) {
+  @media (prefers-color-scheme: dark) {
     :root:not([data-theme]) {
-      --bg: #f7f6f3; --text: #1b1b1a; --muted: #5c5c56; --faint: #8f8f88;
-      --rule: #e4e2db; --accent: #2148c0; --panel: rgba(20, 20, 18, 0.02);
-      color-scheme: light;
+      --bg: #0E1524; --card: #131C2E; --text: #E8EDF5; --muted: #9AA7BC; --rule: #1F2A40;
+      --accent: #5B9BEA; --accent-ink: #0B111D; --shadow: 0 1px 2px rgba(0,0,0,.3); color-scheme: dark;
     }
   }
-  :root[data-theme="light"] {
-    --bg: #f7f6f3; --text: #1b1b1a; --muted: #5c5c56; --faint: #8f8f88;
-    --rule: #e4e2db; --accent: #2148c0; --panel: rgba(20, 20, 18, 0.02);
-    color-scheme: light;
-  }
   :root[data-theme="dark"] {
-    --bg: #0B1220; --text: #e6e4df; --muted: #9a9a92; --faint: #6f6f68;
-    --rule: #2a2c33; --accent: #7ba0ff; --panel: rgba(255, 255, 255, 0.02);
-    color-scheme: dark;
+    --bg: #0E1524; --card: #131C2E; --text: #E8EDF5; --muted: #9AA7BC; --rule: #1F2A40;
+    --accent: #5B9BEA; --accent-ink: #0B111D; --shadow: 0 1px 2px rgba(0,0,0,.3); color-scheme: dark;
   }
 
   * { box-sizing: border-box; }
   body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    font-size: 16px;
-    line-height: 1.7;
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--sans); font-size: 16px; line-height: 1.65;
     -webkit-font-smoothing: antialiased;
     transition: background-color 0.2s ease, color 0.2s ease;
   }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  :focus-visible { outline: 2px solid var(--blue); outline-offset: 3px; border-radius: 4px; }
+  .wrap { width: 100%; max-width: 64rem; margin: 0 auto; padding: 0 24px; }
 
   #theme-toggle {
     position: fixed; top: 16px; right: 16px; z-index: 20;
-    width: 36px; height: 36px; display: grid; place-items: center;
-    border: 1px solid var(--rule); border-radius: 9px;
-    background: var(--bg); color: var(--faint); cursor: pointer;
+    width: 38px; height: 38px; display: grid; place-items: center;
+    border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 10px;
+    background: rgba(11, 17, 29, 0.55); color: #cfd8e6; cursor: pointer;
+    backdrop-filter: blur(6px);
     transition: color 0.15s ease, border-color 0.15s ease;
   }
-  #theme-toggle:hover { color: var(--text); border-color: var(--muted); }
-  #theme-toggle svg { width: 17px; height: 17px; }
+  #theme-toggle:hover { color: #fff; border-color: rgba(255, 255, 255, 0.5); }
+  #theme-toggle svg { width: 18px; height: 18px; }
   #theme-toggle .i-sun { display: none; }
   #theme-toggle[data-theme="dark"] .i-sun { display: block; }
   #theme-toggle[data-theme="dark"] .i-moon { display: none; }
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; text-underline-offset: 2px; }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-  .page { max-width: 40rem; margin: 0 auto; padding: clamp(40px, 9vw, 88px) 24px clamp(56px, 12vw, 112px); }
-
-  .masthead { text-align: center; }
-  .masthead img {
-    display: block;
-    margin: 0 auto;
-    width: clamp(260px, 72vw, 400px);
-    height: auto;
-    border-radius: 16px;
-  }
-
-  .intro { margin-top: clamp(28px, 6vw, 44px); }
-  .intro p { margin: 0; max-width: 34rem; }
-  .intro .links { margin-top: 16px; font-size: 0.92rem; color: var(--faint); display: flex; gap: 10px; flex-wrap: wrap; }
-
-  .works { margin-top: clamp(48px, 11vw, 80px); }
-  .works h2 {
-    margin: 0 0 16px;
-    font-size: 0.78rem; font-weight: 600;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--faint);
-  }
-  .works ol {
-    list-style: none; margin: 0; padding: 0;
-    display: grid;
+  /* ---------- En-tête (toujours marine) ---------- */
+  .hero { background: var(--navy); color: #E8EDF5; }
+  .hero-grid {
+    display: grid; align-items: center; gap: 24px;
     grid-template-columns: 1fr;
-    gap: 18px;
+    padding-top: clamp(48px, 8vw, 88px); padding-bottom: clamp(40px, 7vw, 80px);
   }
+  .hero-logo { width: clamp(180px, 46vw, 300px); height: auto; justify-self: center; order: -1; border-radius: 12px; }
+  .kicker { margin: 0; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--blue); }
+  .hero h1 { margin: 10px 0 0; font-size: clamp(2.2rem, 6vw, 3.4rem); line-height: 1.08; letter-spacing: -0.025em; font-weight: 700; color: #fff; }
+  .role { margin: 8px 0 0; font-size: clamp(1.05rem, 2.4vw, 1.25rem); color: #AFC3E0; }
+  .pitch { margin: 20px 0 0; max-width: 34rem; color: #C3CCDB; }
+  .cta { margin: 28px 0 0; display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-block; padding: 11px 22px; border-radius: 10px; font-weight: 600; font-size: 0.95rem;
+    border: 1px solid transparent; transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+  .btn:hover { text-decoration: none; }
+  .btn.primary { background: var(--blue); color: #fff; }
+  .btn.primary:hover { background: #5A9BE8; }
+  .btn.ghost { color: #E8EDF5; border-color: rgba(255, 255, 255, 0.3); }
+  .btn.ghost:hover { border-color: rgba(255, 255, 255, 0.6); }
+
+  @media (min-width: 820px) {
+    .hero-grid { grid-template-columns: 1.15fr 0.85fr; gap: 56px; }
+    .hero-logo { order: 0; justify-self: end; width: min(100%, 340px); }
+  }
+
+  /* ---------- Réalisations ---------- */
+  .works { padding-top: clamp(40px, 7vw, 72px); padding-bottom: clamp(48px, 8vw, 88px); }
+  .section-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; margin-bottom: 24px; }
+  .section-head h2 { margin: 0; font-size: clamp(1.4rem, 3.4vw, 1.8rem); letter-spacing: -0.02em; }
+  .section-head p { margin: 0; color: var(--muted); font-size: 0.92rem; }
+  .works ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr; gap: 22px; }
+  @media (min-width: 760px) { .works ol { grid-template-columns: repeat(2, 1fr); gap: 26px; } }
+
   .works li {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    border: 1px solid var(--rule);
-    border-radius: 12px;
+    display: flex; flex-direction: column; overflow: hidden;
+    background: var(--card); border: 1px solid var(--rule); border-radius: 14px; box-shadow: var(--shadow);
+    transition: transform 0.2s ease, border-color 0.2s ease;
   }
-  .num { font-family: var(--mono); font-size: 0.82rem; color: var(--faint); margin-bottom: 6px; }
+  .works li:hover { transform: translateY(-3px); border-color: var(--blue); }
+  .shot { display: block; aspect-ratio: 16 / 10; overflow: hidden; background: var(--rule); border-bottom: 1px solid var(--rule); }
+  .shot img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
 
-  /* Format PC : au moins deux colonnes, section élargie hors de la colonne de lecture. */
-  @media (min-width: 760px) {
-    .works {
-      width: min(52rem, 92vw);
-      margin-left: 50%;
-      transform: translateX(-50%);
-    }
-    .works ol { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  .work-title { display: flex; align-items: center; gap: 9px; }
-  .work-title img { border-radius: 5px; flex: none; }
-  .work h3 { margin: 0; font-family: var(--serif); font-size: 1.25rem; font-weight: 600; letter-spacing: -0.01em; }
+  .work { display: flex; flex-direction: column; flex: 1; padding: 20px 22px 22px; }
+  .work-title { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+  .work h3 { margin: 0; font-size: 1.2rem; letter-spacing: -0.015em; font-weight: 650; }
   .work h3 a { color: var(--text); }
   .work h3 a:hover { color: var(--accent); text-decoration: none; }
-  .work-title .tag {
-    font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--faint); border: 1px solid var(--rule); border-radius: 999px;
-    padding: 2px 8px; white-space: nowrap;
+  .tag {
+    font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--accent); border: 1px solid currentColor; border-radius: 999px; padding: 2px 9px; white-space: nowrap;
   }
+  .desc { margin: 10px 0 0; color: var(--muted); font-size: 0.97rem; }
+  .role-line { margin: 10px 0 0; font-size: 0.85rem; color: var(--muted); }
+  .stack { list-style: none; margin: 12px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .stack li {
+    padding: 2px 10px; font-size: 0.78rem; font-weight: 500; color: var(--text);
+    background: var(--bg); border: 1px solid var(--rule); border-radius: 999px;
+    box-shadow: none; transform: none; display: block;
+  }
+  .stack li:hover { transform: none; border-color: var(--rule); }
+  .work-links { margin: auto 0 0; padding-top: 18px; display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 0.92rem; font-weight: 600; }
+  .work-links .quiet { font-weight: 500; color: var(--muted); }
 
-  .shot {
-    display: block;
-    margin: 14px 0 2px;
-    border: 1px solid var(--rule);
-    border-radius: 10px;
-    overflow: hidden;
-    background: var(--rule);
-  }
-  .shot img { display: block; width: 100%; height: auto; }
-  .shot:hover { border-color: var(--muted); }
+  /* ---------- Pied de page ---------- */
+  footer { background: var(--navy); color: #AFC0D8; font-size: 0.88rem; }
+  .foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: 24px; padding-bottom: 28px; }
+  .foot p { margin: 0; }
+  footer a { color: #D6E2F5; }
 
-  .desc { margin: 10px 0 0; color: var(--muted); max-width: 32rem; }
-  .meta {
-    margin: 12px 0 0;
-    font-family: var(--mono); font-size: 0.8rem; color: var(--faint);
-    display: flex; flex-direction: column; gap: 2px;
-  }
-  .work-links { margin: 16px 0 0; display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 0.9rem; }
-
-  footer {
-    margin-top: clamp(48px, 11vw, 80px);
-    color: var(--faint); font-size: 0.85rem;
-  }
-
-  @media (max-width: 460px) {
-    .num { display: none; }
-  }
+  @media (prefers-reduced-motion: reduce) { .works li, .works li:hover { transition: none; transform: none; } }
 </style>
