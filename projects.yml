@@ -59,6 +59,7 @@ projects:
     role: Projet client — conception et développement
     logo: /logos/tilleul-canac.svg
     wip: true                    # en construction : pas de lien public vers l'app
+    source: false                # pas de lien « Code source » (projet client)
     repo: https://github.com/tomvieilledent/tilleul-canac.git
     branch: main
     deployed: true
