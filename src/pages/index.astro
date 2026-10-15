@@ -23,6 +23,8 @@ const projects = (cfg.projects ?? [])
     logo: p.logo ?? "",
     cover: coverFor(p.name),
     wip: p.wip === true,
+    // `source: false` = pas de lien « Code source » (projet client, dépôt non public).
+    source: p.source !== false,
     repo: String(p.repo || "").replace(/^https:\/\/github\.com\//, "").replace(/\.git$/, ""),
     landing: `/${p.name}/`,
   }));
@@ -99,7 +101,7 @@ const projects = (cfg.projects ?? [])
                 </p>
                 <p class="work-links">
                   <a href={p.landing}>Présentation</a>
-                  <a href={`https://github.com/${p.repo}`}>Code source</a>
+                  {p.source && <a href={`https://github.com/${p.repo}`}>Code source</a>}
                 </p>
               </div>
             </li>

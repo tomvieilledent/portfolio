@@ -73,6 +73,7 @@ projects:
     role: Projet client — conception et développement
     logo: /logos/vakom-stephen.svg
     wip: true                    # en construction
+    source: false                # pas de lien « Code source » (projet client)
     repo: https://github.com/tomvieilledent/vakom_stephen.git
     branch: main
     deployed: true
