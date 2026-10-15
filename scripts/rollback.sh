@@ -35,6 +35,9 @@ case "$RUNTIME" in
     step "rollback $TARGET : $cur → $tgt"
     promote_release "$BASE" "$tgt"
     ;;
+  landing)
+    die "runtime landing : pas de release à restaurer (relancer deploy-project.sh)"
+    ;;
   compose)
     require_cmd docker git
     [[ -f "$BASE/.deployed_sha" ]] || die "pas d'historique .deployed_sha"

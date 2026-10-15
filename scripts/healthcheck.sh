@@ -28,7 +28,7 @@ if [[ -f "$CONFIG_FILE" ]]; then
   step "projets déployés"
   for n in $(cfg_names); do
     cfg_deployed "$n" || continue
-    check "https://$n.$DOMAIN"
+    [[ "$(cfg_field "$n" runtime static)" == landing ]] || check "https://$n.$DOMAIN"
     [[ -d "$LANDING_DIR/$n" ]] && check "https://$DOMAIN/$n/"
     if [[ "$(cfg_field "$n" runtime static)" == compose ]] && command -v docker >/dev/null; then
       st="$(docker compose -p "vlldnt-$n" ps --status running -q 2>/dev/null | wc -l)"

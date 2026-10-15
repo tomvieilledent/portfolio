@@ -72,14 +72,11 @@ projects:
     stack: React · Vite · Tailwind
     role: Projet client — conception et développement
     logo: /logos/vakom-stephen.svg
-    wip: true                    # en construction : pas de lien public vers l'app
+    wip: true                    # en construction
     repo: https://github.com/tomvieilledent/vakom_stephen.git
     branch: main
     deployed: true
-    runtime: static
-    # Le build du dépôt fixe base=/vakom_stephen/ (GitHub Pages) : on force la
-    # racine pour servir l'app sur vakom-stephen.vlldnt.fr.
-    build: npm install --no-audit --no-fund && npx vite build --base=/ && node scripts/prerender.js
+    runtime: landing             # landing-page/ uniquement : aucune app, pas de sous-domaine
 
   - name: tilleul-canac-api
     public: false               # API de réservation du Tilleul de Canac — pas de vitrine

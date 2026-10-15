@@ -125,7 +125,8 @@ step "génération de projects.md"
     dep="$(cfg_deployed "$n" && echo oui || echo non)"
     rt="$(cfg_field "$n" runtime static)"
     lp="$([[ -d "$LANDING_DIR/$n" ]] && echo oui || echo —)"
-    echo "| \`$n\` | $repo | $dep | $rt | $lp | app: \`$n.$DOMAIN\` · landing: \`$DOMAIN/$n\` |"
+    if [[ "$rt" == landing ]]; then urls="landing: \`$DOMAIN/$n\`"; else urls="app: \`$n.$DOMAIN\` · landing: \`$DOMAIN/$n\`"; fi
+    echo "| \`$n\` | $repo | $dep | $rt | $lp | $urls |"
   done
   echo
   echo "_Généré le $(date -u +%Y-%m-%dT%H:%M:%SZ)._"

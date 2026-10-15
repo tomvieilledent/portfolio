@@ -4,6 +4,7 @@
 #  (Re)déploie un projet SI son entrée projects.yml a deployed: true.
 #  - runtime static  : git → build → releases/<ts> → symlink current
 #  - runtime compose : git → docker compose up -d --build → proxy_pass
+#  - runtime landing : git → landing-page/ UNIQUEMENT (aucune app, aucun sous-domaine)
 #  Détecte une landing-page/ optionnelle et la publie sous vlldnt.fr/<nom>.
 # =====================================================================
 set -Eeuo pipefail
@@ -62,7 +63,12 @@ case "$RUNTIME" in
     echo "$SHA $(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$PROOT/.deployed_sha"
     render_template "$NGINX_TMPL/app.compose.tmpl" "$NGINX_GEN/apps/$NAME.conf" NAME "$NAME" PORT "$PORT" CSP "$CSP"
     ;;
-  *) die "runtime inconnu : « $RUNTIME » (static|compose)";;
+  landing)
+    step "runtime landing : aucune application déployée"
+    safe_rm "$NGINX_GEN/apps/$NAME.conf"
+    [[ -d "$SRC/landing-page" ]] || die "runtime landing : landing-page/ absent du dépôt"
+    ;;
+  *) die "runtime inconnu : « $RUNTIME » (static|compose|landing)";;
 esac
 
 # --- Landing page (optionnelle) ------------------------------------
@@ -83,6 +89,11 @@ fi
 nginx_reload
 
 step "vérification"
-code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "https://$NAME.$DOMAIN" || true)"
-[[ "$code" == 200 ]] && log "https://$NAME.$DOMAIN → $code ✅" || warn "https://$NAME.$DOMAIN → $code (DNS/HSTS/propagation ?)"
+if [[ "$RUNTIME" == landing ]]; then
+  CHECK_URL="https://$DOMAIN/$NAME/"
+else
+  CHECK_URL="https://$NAME.$DOMAIN"
+fi
+code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "$CHECK_URL" || true)"
+[[ "$code" == 200 ]] && log "$CHECK_URL → $code ✅" || warn "$CHECK_URL → $code (DNS/HSTS/propagation ?)"
 log "=== terminé : $NAME ($SHA)"
