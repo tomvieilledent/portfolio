@@ -35,23 +35,6 @@ projects:
     runtime: compose            # static | compose
     port: 8084                  # port loopback interne
 
-  - name: cashmire
-    title: Cashmire
-    tagline: Suivi de dépenses et de budgets — catégories, seuils d'alerte et tableau de bord. Django, SvelteKit, PostgreSQL.
-    stack: Django · SvelteKit · PostgreSQL
-    role: Projet d'équipe Holberton — budgets, architecture, hébergement
-    logo: /logos/cashmire.svg
-    repo: https://github.com/tomvieilledent/cashmire.git
-    branch: main
-    deployed: true
-    runtime: compose
-    port: 8087                  # port loopback interne
-    compose_file: compose.prod.yml
-    # SvelteKit injecte un script inline d'amorçage (hash variable à chaque build)
-    csp: "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'"
-    # secrets réels : /opt/vlldnt/config/cashmire.env (hors Git, chmod 600 ;
-    # voir .env.prod.example du dépôt pour la liste des variables)
-
   - name: tilleul-canac
     title: Le Tilleul de Canac
     tagline: Site vitrine d'une chambre d'hôtes en Aveyron — présentation, galerie et disponibilités.
@@ -74,7 +57,6 @@ projects:
     role: Projet client — conception et développement
     logo: /logos/vakom-stephen.svg
     wip: true                    # en construction
-    source: false                # pas de lien « Code source » (projet client)
     repo: https://github.com/tomvieilledent/vakom_stephen.git
     branch: main
     deployed: true
