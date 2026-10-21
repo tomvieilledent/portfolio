@@ -67,6 +67,21 @@ projects:
     port: 8085                  # port loopback interne (compose_file: compose.yml par défaut,
                                  # à la racine du dépôt — le backend a le sien sous backend/)
 
+  - name: portail-mde
+    title: Portail MDE
+    tagline: Portail d'une pépinière d'entreprises — annuaire, messagerie en temps réel, agenda, formations et actualités.
+    stack: FastAPI · React · PostgreSQL
+    role: Projet personnel — conception, développement, hébergement
+    logo: /logos/portail-mde.svg
+    wip: true                    # passer à false une fois le site validé en production
+    repo: https://github.com/tomvieilledent/portailMDE.git
+    branch: main
+    deployed: false              # passer à true après : DNS A portail-mde, /opt/vlldnt/config/portail-mde.env, secrets GitHub
+    runtime: compose
+    port: 8087                  # port loopback interne (aligné sur WEB_PORT)
+    compose_file: docker-compose.prod.yml
+    csp: "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' wss:; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'"
+
   - name: vakom-stephen
     title: Site vitrine Vakom
     tagline: Site vitrine d'un consultant local du réseau Vakom — expertises, solutions RH, présentation et contact.

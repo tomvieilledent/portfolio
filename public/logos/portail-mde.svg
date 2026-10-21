@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Logo : deux personnes reliées">
+  <rect width="512" height="512" rx="112" fill="#0F4C81"/>
+  <circle cx="176" cy="196" r="56" fill="#FFFFFF"/>
+  <circle cx="336" cy="196" r="56" fill="#93C5FD"/>
+  <path d="M80 392c0-64 48-96 96-96s96 32 96 96zM240 392c0-64 48-96 96-96s96 32 96 96z" fill="#FFFFFF" opacity=".92"/>
+</svg>
