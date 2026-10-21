@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Logo : portail MDE">
+  <rect width="512" height="512" rx="112" fill="#4a7a1a"/>
+  <circle cx="256" cy="256" r="150" fill="none" stroke="#ffffff" stroke-width="36"/>
+  <path d="M206 330 V186 H262 Q300 186 300 222 Q300 256 262 258 H206 M262 258 L306 330" fill="none" stroke="#ffffff" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

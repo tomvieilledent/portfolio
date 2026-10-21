@@ -62,6 +62,22 @@ projects:
     deployed: true
     runtime: landing             # landing-page/ uniquement : aucune app, pas de sous-domaine
 
+  - name: mde
+    title: Portail MDE
+    tagline: Portail interne de la Maison de l'Économie — annuaire des entreprises, messagerie, agenda, formations et actualités. Démo avec jeu de données fictif.
+    stack: React · FastAPI · PostgreSQL
+    role: Projet — conception, développement, hébergement
+    logo: /logos/mde.svg
+    repo: https://github.com/tomvieilledent/portailMDE.git
+    branch: main
+    deployed: true
+    runtime: compose
+    port: 8088                  # port loopback interne
+    compose_file: compose.vlldnt.yml
+    # CSP élargie : polices locales, aperçus d'images (blob:) et WebSocket de la messagerie.
+    csp: "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self' data:; connect-src 'self' wss://mde.vlldnt.fr; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'"
+    # secrets réels : /opt/vlldnt/config/mde.env (hors Git, cf. .env.vlldnt.example du dépôt)
+
   - name: tilleul-canac-api
     public: false               # API de réservation du Tilleul de Canac — pas de vitrine
     repo: https://github.com/tomvieilledent/tilleul-canac.git
